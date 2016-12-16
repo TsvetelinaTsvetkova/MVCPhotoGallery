@@ -1,7 +1,30 @@
-﻿
+﻿@model List <MVCPhotoGallery.Models.Album>
+
 @{
     ViewBag.Title = "List";
 }
 
-<h2>List</h2>
+<h2 class="text-center">Albums</h2>
+<div class="row">
+    <table class="table table-bordered table-hover col-sm-12">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var album in Model)
+            {
+                <tr>
+                    <td>@album.Name</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null)
+                        @Html.ActionLink("Delete", "Delete", "Album", new { @id = album.Id }, null)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

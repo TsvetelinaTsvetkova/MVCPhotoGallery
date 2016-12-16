@@ -31,6 +31,8 @@ namespace MVCPhotoGallery.Models
 
         public virtual IDbSet<Category> Categories { get; set; }
 
+        public virtual IDbSet<Album> Albums { get; set; }
+
         public static PhotoGalleryDbContext Create()
         {
             return new PhotoGalleryDbContext();
