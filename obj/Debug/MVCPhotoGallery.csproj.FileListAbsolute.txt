@@ -79,3 +79,4 @@ C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery\MVCPhotoGall
 C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery\MVCPhotoGallery\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery\MVCPhotoGallery\obj\Debug\MVCPhotoGallery.dll
 C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery\MVCPhotoGallery\obj\Debug\MVCPhotoGallery.pdb
+C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery\MVCPhotoGallery\obj\Debug\MVCPhotoGallery.csprojResolveAssemblyReference.cache

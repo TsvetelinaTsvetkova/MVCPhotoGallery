@@ -24,16 +24,31 @@ namespace MVCPhotoGallery.Models
 
         public virtual ApplicationUser Author { get; set; }
 
+        private ICollection<Album> albums;
+
         public Photo()
         {
             this.DateAdded = DateTime.Now;
-          
+            this.albums = new HashSet<Album>();  
         }
 
         public bool IsAuthor(string name)
         {
             return this.Author.UserName.Equals(name);
-        } 
+        }
+
+        public virtual ICollection<Album> Albums
+        {
+            get
+            {
+                return this.albums;
+            }
+
+            set
+            {
+                this.albums = value;
+            }
+        }
 
     }
 }
