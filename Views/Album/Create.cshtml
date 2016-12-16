@@ -1,24 +1,50 @@
-﻿@model MVCPhotoGallery.Models.Album
+﻿@model MVCPhotoGallery.Models.ViewModels.AlbumViewModel
 
 @{
     ViewBag.Title = "Create";
+    List<SelectListItem> list = new List<SelectListItem>();
+
+    if (Model.AllPhotos != null)
+    {
+        foreach (var photo in Model.AllPhotos)
+        {
+            list.Add(new SelectListItem()
+            {
+                Text = photo.Title,
+                Value = photo.Id.ToString(),
+                Selected = false
+            });
+        }
+    }
+
 }
 
 <h2 class="text-center">Create Album</h2>
 
 @using (@Html.BeginForm("Create", "Album", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    <div class="form-group span=8 offset=2">
-        @Html.LabelFor(m => m.Name, new { @class = "control-label col-sm-4" })
+    <div class="form-group span-8 offset-2">
+        
+        <label class = "control-label col-sm-4">Name</label>
         <div class="col-sm-4">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @*@Html.TextBoxFor(m => m.Album.Name, new { @class = "form-control" })*@
+            <input type="text" name="name" value="" class="form-control"/>
         </div>
     </div>
 
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-4">
-                    @Html.ActionLink("Cancel", "List", "Album", new { @class = "btn btn-default" })
-                    <input type="submit" value="Create" class="btn btn-info" />
-                </div>
-            </div>
+    <div class="form-group">       
+        <label class="control-label col-sm-4">Photos</label>
+        <div class="col-sm-4">
+        
+            @Html.ListBox("AllPhotos", list)
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+            @Html.ActionLink("Cancel", "List", "Album", new { @class = "btn btn-default" })
+            <input type="submit" value="Create" class="btn btn-info" />
+        </div>
+    </div>
 }
