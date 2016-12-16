@@ -1,0 +1,30 @@
+﻿@model MVCPhotoGallery.Models.Photo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="container">
+    <article class="pull-left">
+        <img src="@Model.Path" width="304" height="236"/>   
+        <header>
+            <h2>
+                @Model.Title
+            </h2>
+        </header>
+</article>
+    <div class="pull-right">
+        @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
+            {
+            @Html.ActionLink("Edit", "Edit", "Photo", new { @id = Model.Id }, new { @class = "btn btn-info btn-xs" })
+            @Html.ActionLink("Delete", "Delete", "Photo", new { @id = Model.Id }, new { @class = "btn btn-danger btn-xs" })
+        }
+
+        @Html.ActionLink("Back", "Index", "Photo", null, new { @class = "btn btn-default btn-xs" })
+    </div>
+            
+</div>
+
+
+

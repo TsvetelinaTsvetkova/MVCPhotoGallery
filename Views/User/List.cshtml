@@ -1,0 +1,42 @@
+﻿@model List<MVCPhotoGallery.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "List";
+}
+        <h2 class="text-center">Users</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="info">
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                    <th>Admin</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model)
+                {
+       
+                    <tr>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "User", new { @id = user.Id }, null)
+                            @Html.ActionLink("Delete", "Delete", "User", new { @id = user.Id }, null)
+                        </td>
+                       @if (ViewBag.Admins.Contains(user.UserName))
+                            {
+                                <td>Yes</td>
+                            }
+                            else
+                            {
+                                <td>No</td>
+                            }
+                        </tr>
+                }
+
+            </tbody>
+        </table>
+ 
+

@@ -1,0 +1,46 @@
+﻿@model MVCPhotoGallery.Models.PhotoViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm("Edit", "Photo", FormMethod.Post, new
+{
+    @class = "form-horizontal",
+    role = "form",
+    enctype = "multipart/form-data"
+}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">      
+        <div>
+            <img src="@Model.Path" width="304" height="236" />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title, new { @class = "control-label col-sm-4" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="image" class="col-sm-4 control-label">Edit Image</label>
+        <div class="col-sm-4">
+            <input type="file" name="picture" />
+        </div>
+
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-4">
+            @Html.ActionLink("Cancel", "Photos", "Photo", null, new { @class = "btn btn-default" })
+            <input type="submit" value="Edit" class="btn btn-info" />
+        </div>
+    </div>
+}
+
+
+
