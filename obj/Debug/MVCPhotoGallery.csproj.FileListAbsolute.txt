@@ -160,4 +160,3 @@ C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery – Копи
 C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery – Копие\MVCPhotoGallery\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery – Копие\MVCPhotoGallery\obj\Debug\MVCPhotoGallery.dll
 C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery – Копие\MVCPhotoGallery\obj\Debug\MVCPhotoGallery.pdb
-C:\Users\Deni\Documents\Visual Studio 2015\Projects\MVCPhotoGallery – Копие\MVCPhotoGallery\obj\Debug\MVCPhotoGallery.csprojResolveAssemblyReference.cache

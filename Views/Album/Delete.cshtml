@@ -4,8 +4,8 @@
     }
 
 
-    <h2 class="text-center">Delete Category</h2>
-    @using (Html.BeginForm("Delete", "Category", FormMethod.Post, new { @class = "form-horizontal" }))
+    <h2 class="text-center">Delete Album</h2>
+    @using (Html.BeginForm("Delete", "Album", FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="form-group">
             @Html.LabelFor(m => m.Name, new { @class = "control-label col-sm-4" })
@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-4">
-                    @Html.ActionLink("Cancel", "List", "Category", new { @class = "btn btn-default" })
+                    @Html.ActionLink("Cancel", "List", "Album", new { @class = "btn btn-default" })
                     <input type="submit" value="Delete" class="btn btn-info" />
                 </div>
             </div>

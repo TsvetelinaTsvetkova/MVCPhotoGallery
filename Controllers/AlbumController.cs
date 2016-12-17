@@ -10,7 +10,6 @@ namespace MVCPhotoGallery.Controllers
 {
     public class AlbumController : Controller
     {
-        // GET: Category
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -71,66 +70,66 @@ namespace MVCPhotoGallery.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult Edit(AlbumModel category)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        using (var database = new PhotoGalleryDbContext())
-        //        {
-        //            database.Entry(category).State = System.Data.Entity.EntityState.Modified;
-        //            database.SaveChanges();
+        [HttpPost]
+        public ActionResult Edit(Album album)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var database = new PhotoGalleryDbContext())
+                {
+                    database.Entry(album).State = System.Data.Entity.EntityState.Modified;
+                    database.SaveChanges();
 
-        //            return RedirectToAction("Index");
-        //        }
-        //    }
+                    return RedirectToAction("Index");
+                }
+            }
 
-        //    return View(category);
-        //}
+            return View(album);
+        }
 
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-        //    using (var database = new PhotoGalleryDbContext())
-        //    {
-        //        var category = database.Categories
-        //            .FirstOrDefault(c => c.Id == id);
+            using (var database = new PhotoGalleryDbContext())
+            {
+                var album = database.Albums
+                    .FirstOrDefault(c => c.Id == id);
 
-        //        if (category == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
+                if (album == null)
+                {
+                    return HttpNotFound();
+                }
 
-        //        return View(category);
-        //    }
-        //}
+                return View(album);
+            }
+        }
 
-        //[HttpPost]
-        //[ActionName("Delete")]
-        //public ActionResult DeleteConfirmed(int? id)
-        //{
-        //    using (var database = new PhotoGalleryDbContext())
-        //    {
-        //        var category = database.Categories
-        //            .FirstOrDefault(c => c.Id == id);
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            using (var database = new PhotoGalleryDbContext())
+            {
+                var album = database.Albums
+                    .FirstOrDefault(c => c.Id == id);
 
-        //        var categoryPhotos = category.Photos
-        //            .ToList();
+                var albumPhotos = album.Photos
+                    .ToList();
 
-        //        foreach (var photo in categoryPhotos)
-        //        {
-        //            database.Photos.Remove(photo);
-        //        }
+                foreach (var photo in albumPhotos)
+                {
+                    database.Photos.Remove(photo);
+                }
 
-        //        database.Categories.Remove(category);
-        //        database.SaveChanges();
+                database.Albums.Remove(album);
+                database.SaveChanges();
 
-        //        return RedirectToAction("Index");
-        //    }
-        //}
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

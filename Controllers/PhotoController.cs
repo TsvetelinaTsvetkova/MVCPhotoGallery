@@ -12,6 +12,24 @@ namespace MVCPhotoGallery.Controllers
 {
     public class PhotoController : Controller
     {
+
+        private string SavePostedFile(HttpPostedFileBase picture)
+        {
+            string pic = System.IO.Path.GetFileName(picture.FileName);
+            string path = System.IO.Path.Combine(
+                                   Server.MapPath("~/Content/Images"), pic);
+
+            picture.SaveAs(path);
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                picture.InputStream.CopyTo(ms);
+                byte[] array = ms.GetBuffer();
+            }
+
+            return "/Content/Images/" + pic;
+        }
+
         [Authorize]
         [HttpGet]
         public ActionResult Upload()
@@ -25,10 +43,10 @@ namespace MVCPhotoGallery.Controllers
                                     .ToList();
                 return View(model);
             }
-           
+
         }
-               
-        
+
+
 
         public ActionResult Photos()
         {
@@ -37,32 +55,19 @@ namespace MVCPhotoGallery.Controllers
                 var photos = dbContext.Photos
                     .Include(p => p.Author)
                         .ToList();
-            
+
                 return View(photos);
             }
         }
 
-       [HttpPost]
-       [Authorize]
+        [HttpPost]
+        [Authorize]
         public ActionResult Upload(HttpPostedFileBase picture, Photo photo, PhotoViewModel model)
         {
             if (picture != null)
             {
-                string pic = System.IO.Path.GetFileName(picture.FileName);
-                string path = System.IO.Path.Combine(
-                                       Server.MapPath("~/Content/Images"), pic);
-
-                picture.SaveAs(path);
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    picture.InputStream.CopyTo(ms);
-                    byte[] array = ms.GetBuffer();
-                }
-                
-                photo.Path = "/Content/Images/" + pic;
+                photo.Path = this.SavePostedFile(picture);
            
-
                 using (PhotoGalleryDbContext dbContext = new PhotoGalleryDbContext())
                 {
                     var authorId = dbContext.Users
@@ -70,15 +75,11 @@ namespace MVCPhotoGallery.Controllers
                         .First()
                         .Id;
 
-                    
-                    photo.AuthorId = authorId;
 
+                    photo.AuthorId = authorId;
 
                     photo.AlbumId = model.AlbumId;
 
-                    //model.Albums = dbContext.Albums;
-
-                    var photoM = new Photo(authorId, model.Title, model.AlbumId,photo.Path);
                     dbContext.Photos.Add(photo);
                     dbContext.SaveChanges();
                 }
@@ -127,7 +128,7 @@ namespace MVCPhotoGallery.Controllers
                     .First();
 
 
-                if(!IsUserAuthorizedToEdit(photo))
+                if (!IsUserAuthorizedToEdit(photo))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
@@ -195,14 +196,14 @@ namespace MVCPhotoGallery.Controllers
                 model.Id = photo.Id;
                 model.Title = photo.Title;
                 model.Path = photo.Path;
- 
-              
+
+
                 return View(model);
             }
         }
 
         [HttpPost]
-        public ActionResult Edit(PhotoViewModel model, HttpPostedFileBase upload)
+        public ActionResult Edit(PhotoViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -212,7 +213,8 @@ namespace MVCPhotoGallery.Controllers
                         .FirstOrDefault(p => p.Id == model.Id);
 
                     photo.Title = model.Title;
-                                                    
+                    photo.Path = this.SavePostedFile(model.ImageUpload);
+
                     database.Entry(photo).State = EntityState.Modified;
                     database.SaveChanges();
 

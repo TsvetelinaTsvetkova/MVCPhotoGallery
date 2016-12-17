@@ -4,25 +4,23 @@
     ViewBag.Title = "List";
 }
 
-<h2 class="text-center">Categories</h2>
+<h2 class="text-center">Albums</h2>
 <div class="row">
     <table class="table table-bordered table-hover col-sm-12">
         <thead>
             <tr>
-                @*<th>#</th>*@
                 <th>Name</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var category in Model)
+            @foreach (var album in Model)
             {
                 <tr>
-                    @*<td>@category.Id</td>*@
-                    <td>@category.Name</td>
+                    <td>@album.Name</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", "Category", new { @id = category.Id }, null)
-                        @Html.ActionLink("Delete", "Delete", "Category", new { @id = category.Id }, null)
+                        @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null)
+                        @Html.ActionLink("Delete", "Delete", "Album", new { @id = album.Id }, null)
                     </td>
                 </tr>
             }
