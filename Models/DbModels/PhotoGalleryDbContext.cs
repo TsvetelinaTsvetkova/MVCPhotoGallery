@@ -5,7 +5,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Validation;
 using System.Linq;
-using MVCPhotoGallery.Models.DbModels;
 
 namespace MVCPhotoGallery.Models
 {
@@ -19,11 +18,9 @@ namespace MVCPhotoGallery.Models
 
         public virtual IDbSet<Photo> Photos { get; set; }
 
-        public virtual IDbSet<Category> Categories { get; set; }
 
         public virtual IDbSet<Album> Albums { get; set; }
 
-        public virtual IDbSet<PhotoAlbums> PhotoAlbums { get; set; }
 
         public static PhotoGalleryDbContext Create()
         {

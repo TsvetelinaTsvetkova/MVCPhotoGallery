@@ -15,6 +15,11 @@ namespace MVCPhotoGallery.Models
         [MaxLength(50)]
         public string Title { get; set; }
 
+        [ForeignKey("Album")]
+        public int AlbumId { get; set; }
+
+        public virtual Album Album { get; set; }
+
         public DateTime DateAdded { get; set; }
 
         public string Path { get; set; }
@@ -24,12 +29,20 @@ namespace MVCPhotoGallery.Models
 
         public virtual ApplicationUser Author { get; set; }
 
-        private ICollection<Album> albums;
+        //private ICollection<Album> albums;
 
         public Photo()
         {
             this.DateAdded = DateTime.Now;
-            this.albums = new HashSet<Album>();  
+            //this.albums = new HashSet<Album>();  
+        }
+
+        public Photo(string authorId, string title, int albumId, string path)
+        {
+            this.AuthorId = authorId;
+            this.Title = title;
+            this.AlbumId = albumId;
+            this.Path = path;
         }
 
         public bool IsAuthor(string name)
@@ -37,18 +50,18 @@ namespace MVCPhotoGallery.Models
             return this.Author.UserName.Equals(name);
         }
 
-        public virtual ICollection<Album> Albums
-        {
-            get
-            {
-                return this.albums;
-            }
+        //public virtual ICollection<Album> Albums
+        //{
+        //    get
+        //    {
+        //        return this.albums;
+        //    }
 
-            set
-            {
-                this.albums = value;
-            }
-        }
+        //    set
+        //    {
+        //        this.albums = value;
+        //    }
+        //}
 
     }
 }

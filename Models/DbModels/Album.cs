@@ -1,12 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
 namespace MVCPhotoGallery.Models
 {
     public class Album
     {
-        private ICollection<Photo> photos;
+        public ICollection<Photo> photos;
+
+        public Album()
+        {
+            this.photos = new HashSet<Photo>();
+        }
 
         [Key]
         public int Id { get; set; }
@@ -16,22 +24,9 @@ namespace MVCPhotoGallery.Models
         [StringLength(20)]
         public string Name { get; set; }
 
-        public virtual ICollection<Photo> Photos
-        {
-            get
-            {
-                return this.photos;
-            }
-            set
-            {
-                this.photos = value;
-            }
+        public virtual ICollection<Photo> Photos { get; set; }
 
-        }
 
-        public Album()
-        {
-            this.photos = new HashSet<Photo>();
-        }
+
     }
 }

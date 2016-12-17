@@ -16,8 +16,19 @@ namespace MVCPhotoGallery.Controllers
         [HttpGet]
         public ActionResult Upload()
         {
-            return View();
+            using (var database = new PhotoGalleryDbContext())
+            {
+                var model = new PhotoViewModel();
+
+                model.Albums = database.Albums
+                                    .OrderBy(a => a.Name)
+                                    .ToList();
+                return View(model);
+            }
+           
         }
+               
+        
 
         public ActionResult Photos()
         {
@@ -33,7 +44,7 @@ namespace MVCPhotoGallery.Controllers
 
        [HttpPost]
        [Authorize]
-        public ActionResult Upload(HttpPostedFileBase picture, Photo photo)
+        public ActionResult Upload(HttpPostedFileBase picture, Photo photo, PhotoViewModel model)
         {
             if (picture != null)
             {
@@ -59,14 +70,23 @@ namespace MVCPhotoGallery.Controllers
                         .First()
                         .Id;
 
+                    
                     photo.AuthorId = authorId;
 
+
+                    photo.AlbumId = model.AlbumId;
+
+                    //model.Albums = dbContext.Albums;
+
+                    var photoM = new Photo(authorId, model.Title, model.AlbumId,photo.Path);
                     dbContext.Photos.Add(photo);
                     dbContext.SaveChanges();
                 }
+
+                return RedirectToAction("ListAlbums", "Home");
             }
 
-            return RedirectToAction("Photos");
+            return View(model);
         }
 
         public ActionResult Details(int? id)
