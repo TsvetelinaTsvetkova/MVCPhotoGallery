@@ -4,28 +4,35 @@
     ViewBag.Title = "List";
 }
 
-<div class="container">
-
-    <div class="row">
-        @foreach (var photo in Model)
+@if (ViewBag.MaxPage != null)
+    {
+        for (int i = 1; i <= ViewBag.MaxPage; i++)
         {
-            <div class="col-sm-6">
-                <article>
-                    <header>
-                        <h2>
-                            @Html.ActionLink(@photo.Title, "Details", "Photo", new { @id = photo.Id }, null)
-                        </h2>
-                    </header>
-                    <img src="@photo.Path" width="304" height="236" />   
-                    <footer class="pull-right">
-                        <small class="author">
-                            --author @photo.Author.FullName
-                        </small>
-                    </footer>
-                </article>
-            </div>
+            <ul class="pagination">
+                <li>@Html.ActionLink(@i.ToString(), "ListPhotos", new { page = @i, @albumId = ViewBag.AlbumId }, null)</li>
+            </ul>
         }
-    </div>
-</div>
-<hr />
+    }
+<div class="container">
+    @foreach (var photo in Model)
+    {
+        <div class="col-sm-4">
+            <article>
+                <header>
+                    <h2>
+                        @Html.ActionLink(@photo.Title, "Details", "Photo", new { @id = photo.Id }, null)
+                    </h2>
+                </header>
+                <img src="@photo.Path" width="304" height="236" />
+                <footer>
+                    <small class="author">
+                        Author @photo.Author.FullName
+                    </small>
+                </footer>
+            </article>
+        </div>
+    }
 
+
+</div>
+       
