@@ -16,7 +16,7 @@ namespace MVCPhotoGallery
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Photo", action = "Photos", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "ListAlbums", id = UrlParameter.Optional }
             );
         }
     }

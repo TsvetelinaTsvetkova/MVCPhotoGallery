@@ -1,38 +1,71 @@
-﻿@model List <MVCPhotoGallery.Models.Photo>
+﻿@model List<MVCPhotoGallery.Models.Photo>
 
 @{
     ViewBag.Title = "List";
 }
 
-@if (ViewBag.MaxPage != null)
-    {
-        for (int i = 1; i <= ViewBag.MaxPage; i++)
-        {
-            <ul class="pagination">
-                <li>@Html.ActionLink(@i.ToString(), "ListPhotos", new { page = @i, @albumId = ViewBag.AlbumId }, null)</li>
-            </ul>
-        }
-    }
 <div class="container">
-    @foreach (var photo in Model)
-    {
-        <div class="col-sm-4">
-            <article>
-                <header>
-                    <h2>
-                        @Html.ActionLink(@photo.Title, "Details", "Photo", new { @id = photo.Id }, null)
-                    </h2>
-                </header>
-                <img src="@photo.Path" width="304" height="236" />
-                <footer>
-                    <small class="author">
-                        Author @photo.Author.FullName
-                    </small>
-                </footer>
-            </article>
+
+    <div class="row">
+        <div class="col-sm-12">
+            @if (ViewBag.MaxPage != null)
+            {
+                <ul class="pagination">
+                    @if (ViewBag.Page > 1)
+                {
+                <li>
+                    <a href="@Url.Action("ListPhotos", new { page = ViewBag.Page - 1, @albumId = ViewBag.AlbumId })">
+                        <<
+                    </a>
+                </li>
+                }
+
+                    @for (int i = 1; i <= ViewBag.MaxPage; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                <li class="active">
+                    @Html.ActionLink(@i.ToString(), "ListPhotos", new { page = @i, @albumId = ViewBag.AlbumId }, null)
+                </li>
+                    }
+                    else
+                    {
+                <li>
+                    @Html.ActionLink(@i.ToString(), "ListPhotos", new { page = @i, @albumId = ViewBag.AlbumId }, null)
+                </li>
+                    }
+                }
+
+                    @if (ViewBag.Page < ViewBag.MaxPage)
+                {
+                <li>
+                    <a href="@Url.Action("ListPhotos", new { page = ViewBag.Page + 1, @albumId = ViewBag.AlbumId })">
+                        <b>>></b>
+                    </a>
+                </li>
+                }
+                </ul>
+            }
         </div>
-    }
-
-
+    </div>
+    <div class="row">
+        @foreach (var photo in Model)
+        {
+            <div class="col-sm-4">
+                <article>
+                    <header>
+                        <h2>
+                            @Html.ActionLink(@photo.Title, "Details", "Photo", new { @id = photo.Id }, null)
+                        </h2>
+                    </header>
+                    <img src="@photo.Path" width="304" height="236" />
+                    <footer>
+                        <small class="author">
+                            Author @photo.Author.FullName
+                        </small>
+                    </footer>
+                </article>
+            </div>
+        }
+    </div>
 </div>
-       

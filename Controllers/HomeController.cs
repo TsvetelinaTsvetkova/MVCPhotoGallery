@@ -47,9 +47,7 @@ namespace MVCPhotoGallery.Controllers
                      .Take(pageSize).ToList();
 
                 var count = database.Photos
-                     .Where(a => a.AlbumId == albumId).ToList().Count();
-                //this.ViewBag.MaxPage = (count / pageSize) -
-                //    (count % pageSize == 0 ? 1 : 0);
+                     .Where(a => a.AlbumId == albumId).ToList().Count();            
 
                 this.ViewBag.Page = page;
                 this.ViewBag.AlbumId = albumId.ToString();
