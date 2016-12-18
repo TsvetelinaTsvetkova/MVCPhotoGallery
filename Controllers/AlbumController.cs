@@ -131,5 +131,21 @@ namespace MVCPhotoGallery.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        //public ActionResult ListMyPhotos(int? albumId, int page = 1, int pageSize)
+        //{
+        //    pageSize = 6;
+
+        //    using(var database= new PhotoGalleryDbContext())
+        //    {
+        //        var photos= database.Photos
+        //             .Where(a => a.AlbumId == albumId)
+        //             .Skip((page - 1) * pageSize)
+        //             .Take(pageSize)
+        //             .ToList();
+
+        //        return View(photos/*.ToPagedList(page, pageSize)*/);
+        //    }
+        //}
     }
 }

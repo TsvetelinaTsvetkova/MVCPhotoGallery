@@ -18,7 +18,7 @@ namespace MVCPhotoGallery.Controllers
 
         public ActionResult ListAlbums()
         {
-            using(var database = new PhotoGalleryDbContext())
+            using (var database = new PhotoGalleryDbContext())
             {
                 var albums = database.Albums
                     .Include(a => a.Photos)
@@ -29,8 +29,10 @@ namespace MVCPhotoGallery.Controllers
             }
         }
 
-        public ActionResult ListPhotos(int? albumId)
+        public ActionResult ListPhotos(int? albumId, int page = 1)
         {
+            int pageSize = 6;
+
             if (albumId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,15 +40,25 @@ namespace MVCPhotoGallery.Controllers
 
             using (var database = new PhotoGalleryDbContext())
             {
-                var photos = database.Photos
-                    .Where(a => a.AlbumId == albumId)
-                    .Include(a => a.Author)
-                    .ToList();
+                var allPhotos = database.Photos
+                     .Where(a => a.AlbumId == albumId).Include(a => a.Author).ToList();
+
+                var photos = allPhotos.Skip((page - 1) * pageSize)
+                     .Take(pageSize).ToList();
+
+                var count = database.Photos
+                     .Where(a => a.AlbumId == albumId).ToList().Count();
+                //this.ViewBag.MaxPage = (count / pageSize) -
+                //    (count % pageSize == 0 ? 1 : 0);
+
+                this.ViewBag.Page = page;
+                this.ViewBag.AlbumId = albumId.ToString();
+
+                var maxPage = Math.Ceiling(count / (double)pageSize);
+                this.ViewBag.MaxPage = maxPage;
 
                 return View(photos);
             }
         }
-
-    
-}
+    }
 }
