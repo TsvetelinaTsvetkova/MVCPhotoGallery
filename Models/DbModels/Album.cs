@@ -26,7 +26,15 @@ namespace MVCPhotoGallery.Models
 
         public virtual ICollection<Photo> Photos { get; set; }
 
+        public bool IsAuthor(string name)
+        {
+            return this.Author.UserName.Equals(name);
+        }
 
+        [ForeignKey("Author")]
+        public string AuthorId { get; set; }
+
+        public virtual ApplicationUser Author { get; set; }
 
     }
 }

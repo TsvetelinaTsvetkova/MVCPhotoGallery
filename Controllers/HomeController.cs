@@ -41,17 +41,17 @@ namespace MVCPhotoGallery.Controllers
             using (var database = new PhotoGalleryDbContext())
             {
                 var allPhotos = database.Photos
-                     .Where(a => a.AlbumId == albumId).Include(a => a.Author).ToList();
+                     .Where(p => p.AlbumId == albumId).Include(p => p.Author).ToList();
 
                 var photos = allPhotos.Skip((page - 1) * pageSize)
                      .Take(pageSize).ToList();
 
                 var count = database.Photos
-                     .Where(a => a.AlbumId == albumId).ToList().Count();            
+                     .Where(a => a.AlbumId == albumId).ToList().Count();
 
                 this.ViewBag.Page = page;
                 this.ViewBag.AlbumId = albumId.ToString();
-
+              
                 var maxPage = Math.Ceiling(count / (double)pageSize);
                 this.ViewBag.MaxPage = maxPage;
 

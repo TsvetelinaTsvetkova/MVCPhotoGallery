@@ -8,6 +8,8 @@
     <h2 class="text-center">Edit Album</h2>
     @using (Html.BeginForm("Edit", "Album", FormMethod.Post, new { @class = "form-horizontal" }))
     {
+        <input type="hidden" value="@Model.AuthorId" name="AuthorId"/>
+
         <div class="form-group">
             @Html.LabelFor(m => m.Name, new { @class = "control-label col-sm-4" })
             <div class="col-sm-4">

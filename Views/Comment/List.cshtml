@@ -1,0 +1,29 @@
+﻿@model List <MVCPhotoGallery.Models.DbModels.Comment>
+   
+ @{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+<div class="container">
+    <div class="row">
+        @foreach (var comment in Model)
+        {
+            <div class="col-sm-6">
+                <article>
+                    <p>
+                        @comment.Content
+                    </p>
+                    <footer class="pull-right">
+                        <small class="author">
+                            --author @comment.Author.FullName
+                        </small>
+                        @*@Html.ActionLink("Delete", "Delete", "Comment", new { @id = Model.Id }, new { @class = "btn btn-danger btn-xs" })*@
+                    </footer>
+                </article>
+            </div>
+        }
+    </div>
+</div>
+
+

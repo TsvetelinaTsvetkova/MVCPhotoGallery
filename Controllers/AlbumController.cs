@@ -1,6 +1,7 @@
 ﻿using MVCPhotoGallery.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -20,6 +21,7 @@ namespace MVCPhotoGallery.Controllers
             using (var database = new PhotoGalleryDbContext())
             {
                 var albums = database.Albums
+                    .Include(a=>a.Author)
                     .ToList();
 
                 return View(albums);
@@ -39,13 +41,19 @@ namespace MVCPhotoGallery.Controllers
             {
                 using (var database = new PhotoGalleryDbContext())
                 {
+                    var authorId = database.Users
+                       .Where(u => u.UserName == this.User.Identity.Name)
+                       .First()
+                       .Id;
+
+                    album.AuthorId = authorId;
+
                     database.Albums.Add(album);
                     database.SaveChanges();
 
                     return RedirectToAction("Index");
                 }
             }
-
             return View(album);
         }
 
@@ -58,8 +66,15 @@ namespace MVCPhotoGallery.Controllers
 
             using (var database = new PhotoGalleryDbContext())
             {
-                var album = database.Albums
-                    .FirstOrDefault(c => c.Id == id);
+                var album = database.Albums.Where(c => c.Id == id)
+                                    .Include(c => c.Author)
+                    .First();
+
+
+                if (!IsUserAuthorizedToEdit(album))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
 
                 if (album == null)
                 {
@@ -97,7 +112,14 @@ namespace MVCPhotoGallery.Controllers
             using (var database = new PhotoGalleryDbContext())
             {
                 var album = database.Albums
-                    .FirstOrDefault(c => c.Id == id);
+                    .Where(c => c.Id == id)
+                                    .Include(c => c.Author)
+                    .First();
+
+                if (!IsUserAuthorizedToEdit(album))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
 
                 if (album == null)
                 {
@@ -131,21 +153,12 @@ namespace MVCPhotoGallery.Controllers
                 return RedirectToAction("Index");
             }
         }
+        private bool IsUserAuthorizedToEdit(Album album)
+        {
+            bool isAdmin = this.User.IsInRole("Admin");
+            bool isAuthor = album.IsAuthor(this.User.Identity.Name);
 
-        //public ActionResult ListMyPhotos(int? albumId, int page = 1, int pageSize)
-        //{
-        //    pageSize = 6;
-
-        //    using(var database= new PhotoGalleryDbContext())
-        //    {
-        //        var photos= database.Photos
-        //             .Where(a => a.AlbumId == albumId)
-        //             .Skip((page - 1) * pageSize)
-        //             .Take(pageSize)
-        //             .ToList();
-
-        //        return View(photos/*.ToPagedList(page, pageSize)*/);
-        //    }
-        //}
+            return isAdmin || isAuthor;
+        }       
     }
 }

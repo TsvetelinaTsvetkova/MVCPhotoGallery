@@ -1,30 +1,65 @@
-﻿@model MVCPhotoGallery.Models.Photo
+﻿@using MVCPhotoGallery.Models.DbModels
+@model MVCPhotoGallery.Models.Photo
 
 @{
     ViewBag.Title = "Details";
 }
 
-
-<div class="container">
-    <article class="pull-left">
-        <img src="@Model.Path" width="304" height="236"/>   
-        <header>
-            <h2>
-                @Model.Title
-            </h2>
-        </header>
-</article>
-    <div class="pull-right">
-        @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
-            {
-            @Html.ActionLink("Edit", "Edit", "Photo", new { @id = Model.Id }, new { @class = "btn btn-info btn-xs" })
-            @Html.ActionLink("Delete", "Delete", "Photo", new { @id = Model.Id }, new { @class = "btn btn-danger btn-xs" })
-        }
-
-        @Html.ActionLink("Back", "Index", "Photo", null, new { @class = "btn btn-default btn-xs" })
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <img src="@Model.Path" width="304" height="236" />
+            <div>
+                <h2>
+                    @Model.Title
+                </h2>
+            </div>
+        </div>
     </div>
-            
+    <div class="row">
+        <div class="col-sm-12">
+            @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
+            {
+                @Html.ActionLink("Edit", "Edit", "Photo", new { @id = Model.Id }, new { @class = "btn btn-info btn-md" })
+
+                @Html.ActionLink("Delete", "Delete", "Photo", new { @id = Model.Id }, new { @class = "btn btn-danger btn-md" })
+            }
+
+            @Html.ActionLink("Back", "ListPhotos", "Home", new { @albumId = Model.AlbumId }, new { @class = "btn btn-default btn-md" })
+
+            @Html.ActionLink("Add Comment", "Create", "Comment", new { @id = Model.Id }, new { @class = "btn btn-info btn-md" })
+        </div>
+    </div>
+    <h2>Comments: </h2>
+    <div class="row">
+        <div class="col-sm-12">
+            @foreach (var comment in (List<Comment>)ViewBag.Comments)
+            {
+                <div class="col-sm-12" style="margin-bottom:15px">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <textarea class="col-sm-6" style="height:100px; margin-bottom:10px;" disabled="disabled">@comment.Content</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <span>@comment.Author.FullName</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <span>@comment.DateAdded</span>
+                        </div>
+                        @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
+                        {
+                            <div class="col-sm-1">
+                                @Html.ActionLink("Delete", "Delete", "Comment", new { @id = comment.Id }, new { @class = "btn btn-danger btn-sm" })
+                            </div>
+                            <div class="col-sm-1">
+                                @Html.ActionLink("Edit", "Edit", "Comment", new { @id = comment.Id }, new { @class = "btn btn-info btn-sm" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
-
-
-

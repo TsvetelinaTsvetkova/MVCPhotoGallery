@@ -46,20 +46,6 @@ namespace MVCPhotoGallery.Controllers
 
         }
 
-
-
-        public ActionResult Photos()
-        {
-            using (PhotoGalleryDbContext dbContext = new PhotoGalleryDbContext())
-            {
-                var photos = dbContext.Photos
-                    .Include(p => p.Author)
-                        .ToList();
-
-                return View(photos);
-            }
-        }
-
         [HttpPost]
         [Authorize]
         public ActionResult Upload(HttpPostedFileBase picture, Photo photo, PhotoViewModel model)
@@ -108,6 +94,8 @@ namespace MVCPhotoGallery.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                ViewBag.Comments = dbContext.Comments.Where(c => c.PhotoId == id).Include(c=>c.Author).ToList();
 
                 return View(photo);
             }
@@ -166,7 +154,7 @@ namespace MVCPhotoGallery.Controllers
                 database.Photos.Remove(photo);
                 database.SaveChanges();
 
-                return RedirectToAction("Photos");
+                return RedirectToAction("ListPhotos", "Home", new { albumId = photo.AlbumId });
             }
         }
 
@@ -213,12 +201,16 @@ namespace MVCPhotoGallery.Controllers
                         .FirstOrDefault(p => p.Id == model.Id);
 
                     photo.Title = model.Title;
-                    photo.Path = this.SavePostedFile(model.ImageUpload);
 
+                    if (model.ImageUpload != null)
+                    {
+                        photo.Path = this.SavePostedFile(model.ImageUpload);
+                    }
+                    
                     database.Entry(photo).State = EntityState.Modified;
                     database.SaveChanges();
 
-                    return RedirectToAction("Photos");
+                    return RedirectToAction("Details","Photo", new { id = model.Id });
                 }
             }
             return View(model);

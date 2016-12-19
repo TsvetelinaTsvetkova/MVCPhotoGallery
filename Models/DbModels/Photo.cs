@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCPhotoGallery.Models.DbModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,12 +30,9 @@ namespace MVCPhotoGallery.Models
 
         public virtual ApplicationUser Author { get; set; }
 
-        //private ICollection<Album> albums;
-
         public Photo()
         {
             this.DateAdded = DateTime.Now;
-            //this.albums = new HashSet<Album>();  
         }
 
         public Photo(string authorId, string title, int albumId, string path)
@@ -49,19 +47,6 @@ namespace MVCPhotoGallery.Models
         {
             return this.Author.UserName.Equals(name);
         }
-
-        //public virtual ICollection<Album> Albums
-        //{
-        //    get
-        //    {
-        //        return this.albums;
-        //    }
-
-        //    set
-        //    {
-        //        this.albums = value;
-        //    }
-        //}
 
     }
 }

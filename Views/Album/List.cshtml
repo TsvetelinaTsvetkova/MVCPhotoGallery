@@ -19,8 +19,12 @@
                 <tr>
                     <td>@album.Name</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null)
-                        @Html.ActionLink("Delete", "Delete", "Album", new { @id = album.Id }, null)
+                        @if (User.IsInRole("Admin") || album.IsAuthor(User.Identity.Name))
+                        {
+                            @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null)
+                            @Html.ActionLink("Delete", "Delete", "Album", new { @id = album.Id }, null)
+                        }
+
                         @Html.ActionLink("View", "ListPhotos", "Home", new { @albumId = album.Id }, null)
                     </td>
                 </tr>
@@ -28,4 +32,3 @@
         </tbody>
     </table>
 </div>
- 

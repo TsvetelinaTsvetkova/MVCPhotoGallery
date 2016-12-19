@@ -190,6 +190,13 @@ namespace MVCPhotoGallery.Controllers.Admin
                     database.Photos.Remove(photo);
                 }
 
+                var userComments = database.Comments.Where(c => c.AuthorId == user.Id);
+
+                foreach (var comment in userComments)
+                {
+                    database.Comments.Remove(comment);
+                }
+
                 database.Users.Remove(user);
                 database.SaveChanges();
 
