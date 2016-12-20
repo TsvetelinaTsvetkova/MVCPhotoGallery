@@ -24,6 +24,7 @@
                         @if (User.IsInRole("Admin") || album.IsAuthor(User.Identity.Name))
                         {
                             @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null) 
+                            <span></span>
                             @Html.ActionLink("Delete", "Delete", "Album", new { @id = album.Id }, null)
                         }
 

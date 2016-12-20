@@ -55,13 +55,14 @@ namespace MVCPhotoGallery.Controllers.Admin
 
         public ActionResult Edit(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             using (var database = new PhotoGalleryDbContext())
             {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-
+              
                 var user = database.Users
                    .Where(u => u.Id == id)
                    .First();
@@ -131,7 +132,7 @@ namespace MVCPhotoGallery.Controllers.Admin
                     user.Email = viewModel.User.Email;
                     user.FullName = viewModel.User.FullName;
                     user.UserName = viewModel.User.Email;
-                    this.SetUserRoles(viewModel, user, database);
+                    this.SetUserRoles(user, database,viewModel);
 
                     database.Entry(user).State = EntityState.Modified;
                     database.SaveChanges();
@@ -201,18 +202,18 @@ namespace MVCPhotoGallery.Controllers.Admin
                 return RedirectToAction("List");
             }
         }
-        private void SetUserRoles(EditUserViewModel viewModel, ApplicationUser user, PhotoGalleryDbContext context)
+        private void SetUserRoles(ApplicationUser user, PhotoGalleryDbContext context, EditUserViewModel viewModel)
         {
             var userManager = Request.GetOwinContext()
                 .GetUserManager<ApplicationUserManager>();
 
             foreach (var role in viewModel.Roles)
             {
-                if (role.IsSelected && !userManager.IsInRole(user.Id, role.Name))
+                if (role.IsSelected)
                 {
                     userManager.AddToRole(user.Id, role.Name);
                 }
-                else if (!role.IsSelected && !userManager.IsInRole(user.Id, role.Name))
+                else if (!role.IsSelected)
                 {
                     userManager.RemoveFromRole(user.Id, role.Name);
                 }

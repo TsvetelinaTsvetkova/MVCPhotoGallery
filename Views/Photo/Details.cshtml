@@ -22,7 +22,7 @@
             @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
             {
                 @Html.ActionLink("Edit", "Edit", "Photo", new { @id = Model.Id }, new { @class = "btn btn-info btn-md" })
-
+                <span></span>
                 @Html.ActionLink("Delete", "Delete", "Photo", new { @id = Model.Id }, new { @class = "btn btn-danger btn-md" })
             }
 
