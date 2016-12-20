@@ -18,6 +18,7 @@ namespace MVCPhotoGallery.Controllers
             string path = System.IO.Path.Combine(
                                    Server.MapPath("~/Content/Images"), pic);
 
+
             picture.SaveAs(path);
 
             using (MemoryStream ms = new MemoryStream())
