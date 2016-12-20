@@ -1,9 +1,11 @@
 ﻿@model MVCPhotoGallery.Models.DbModels.Comment
+
 @{
     ViewBag.Title = "Create";
 }
 
 <h2>Add comment</h2>
+
 @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()

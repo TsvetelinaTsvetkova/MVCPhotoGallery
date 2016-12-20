@@ -12,7 +12,6 @@ namespace MVCPhotoGallery.Controllers
 {
     public class PhotoController : Controller
     {
-
         private string SavePostedFile(HttpPostedFileBase picture)
         {
             string pic = System.IO.Path.GetFileName(picture.FileName);
@@ -43,7 +42,6 @@ namespace MVCPhotoGallery.Controllers
                                     .ToList();
                 return View(model);
             }
-
         }
 
         [HttpPost]
@@ -61,19 +59,22 @@ namespace MVCPhotoGallery.Controllers
                         .First()
                         .Id;
 
-
                     photo.AuthorId = authorId;
-
                     photo.AlbumId = model.AlbumId;
+
+                    if (string.IsNullOrEmpty(photo.Title))
+                    {
+                        photo.Title = "No name";
+                    }
 
                     dbContext.Photos.Add(photo);
                     dbContext.SaveChanges();
                 }
 
-                return RedirectToAction("ListAlbums", "Home");
+                return RedirectToAction("ListPhotos", "Home",new {@albumId = photo.AlbumId });
             }
 
-            return View(model);
+            return RedirectToAction("Upload");
         }
 
         public ActionResult Details(int? id)
@@ -101,6 +102,7 @@ namespace MVCPhotoGallery.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,10 +114,10 @@ namespace MVCPhotoGallery.Controllers
             {
                 var photo = database.Photos
                     .Where(p => p.Id == id)
+                    .Include(p=>p.Album)
                     .Include(p => p.Author)
                     .First();
-
-
+ 
                 if (!IsUserAuthorizedToEdit(photo))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -130,6 +132,7 @@ namespace MVCPhotoGallery.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
@@ -152,12 +155,21 @@ namespace MVCPhotoGallery.Controllers
                 }
 
                 database.Photos.Remove(photo);
+
                 database.SaveChanges();
+
+                string fullPath = AppDomain.CurrentDomain.BaseDirectory + photo.Path;
+
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
 
                 return RedirectToAction("ListPhotos", "Home", new { albumId = photo.AlbumId });
             }
         }
 
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -170,6 +182,7 @@ namespace MVCPhotoGallery.Controllers
                 var photo = database.Photos
                                     .Where(p => p.Id == id)
                                     .First();
+
                 if (!IsUserAuthorizedToEdit(photo))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -184,12 +197,16 @@ namespace MVCPhotoGallery.Controllers
                 model.Id = photo.Id;
                 model.Title = photo.Title;
                 model.Path = photo.Path;
-
+                model.AlbumId = photo.AlbumId;
+                model.Albums = database.Albums
+                    .OrderBy(a => a.Name)
+                    .ToList();
 
                 return View(model);
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(PhotoViewModel model)
         {
@@ -201,6 +218,7 @@ namespace MVCPhotoGallery.Controllers
                         .FirstOrDefault(p => p.Id == model.Id);
 
                     photo.Title = model.Title;
+                    photo.AlbumId = model.AlbumId;
 
                     if (model.ImageUpload != null)
                     {
@@ -213,6 +231,7 @@ namespace MVCPhotoGallery.Controllers
                     return RedirectToAction("Details","Photo", new { id = model.Id });
                 }
             }
+
             return View(model);
         }
 

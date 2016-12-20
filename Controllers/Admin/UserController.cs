@@ -28,12 +28,13 @@ namespace MVCPhotoGallery.Controllers.Admin
                 return View(users);
             }
         }
+
         // GET: User
         public ActionResult Index()
         {
             return RedirectToAction("List");
         }
-
+  
         private HashSet<string> GetAdminUserNames(List<ApplicationUser> users, PhotoGalleryDbContext context)
         {
             var userManager = new UserManager<ApplicationUser>(
@@ -47,7 +48,6 @@ namespace MVCPhotoGallery.Controllers.Admin
                 {
                     admins.Add(user.UserName);
                 }
-
             }
 
             return admins;
@@ -61,6 +61,7 @@ namespace MVCPhotoGallery.Controllers.Admin
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
+
                 var user = database.Users
                    .Where(u => u.Id == id)
                    .First();
@@ -77,7 +78,7 @@ namespace MVCPhotoGallery.Controllers.Admin
                 return View(viewModel);
             }
         }
-
+    
         private List<Role> GetUserRoles(ApplicationUser user, PhotoGalleryDbContext db)
         {
             var userManager = Request
@@ -101,12 +102,11 @@ namespace MVCPhotoGallery.Controllers.Admin
                 }
 
                 userRoles.Add(role);
-
             }
 
             return userRoles;
-
         }
+
         [HttpPost]
         public ActionResult Edit(string id, EditUserViewModel viewModel)
         {
@@ -136,7 +136,6 @@ namespace MVCPhotoGallery.Controllers.Admin
                     database.Entry(user).State = EntityState.Modified;
                     database.SaveChanges();
 
-
                     return RedirectToAction("List");
                 }
             }
@@ -161,7 +160,6 @@ namespace MVCPhotoGallery.Controllers.Admin
                 {
                     return HttpNotFound();
                 }
-
 
                 return View(user);
             }
@@ -205,7 +203,7 @@ namespace MVCPhotoGallery.Controllers.Admin
         }
         private void SetUserRoles(EditUserViewModel viewModel, ApplicationUser user, PhotoGalleryDbContext context)
         {
-            var userManager = HttpContext.GetOwinContext()
+            var userManager = Request.GetOwinContext()
                 .GetUserManager<ApplicationUserManager>();
 
             foreach (var role in viewModel.Roles)

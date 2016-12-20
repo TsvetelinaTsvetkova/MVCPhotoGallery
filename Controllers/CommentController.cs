@@ -13,6 +13,7 @@ namespace MVCPhotoGallery.Controllers
 {
     public class CommentController : Controller
     {
+
         // GET: Comment
         public ActionResult Index()
         {
@@ -50,8 +51,8 @@ namespace MVCPhotoGallery.Controllers
                     database.Comments.Add(comment);
 
                     database.SaveChanges();
-
                     ViewBag.Id = id;
+
                     return RedirectToAction("List", new { id = id });
                 }
             }
@@ -60,6 +61,7 @@ namespace MVCPhotoGallery.Controllers
             return View(comment);
         }
 
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -79,7 +81,6 @@ namespace MVCPhotoGallery.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
 
-
                 if (comment == null)
                 {
                     return HttpNotFound();
@@ -97,6 +98,7 @@ namespace MVCPhotoGallery.Controllers
             return isAdmin || isAuthor;
         }
 
+        [Authorize]
         [HttpPost]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
@@ -122,10 +124,10 @@ namespace MVCPhotoGallery.Controllers
                 database.SaveChanges();
 
                 return RedirectToAction("Details","Photo", new {id = comment.PhotoId });
-
             }
         }
 
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -150,6 +152,7 @@ namespace MVCPhotoGallery.Controllers
                 }
 
                 var model = new CommentViewModel();
+
                 model.Id = comment.Id;
                 model.Content = comment.Content;
 
@@ -159,6 +162,7 @@ namespace MVCPhotoGallery.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(CommentViewModel model)
         {
@@ -178,8 +182,8 @@ namespace MVCPhotoGallery.Controllers
                     return RedirectToAction("Details","Photo",new { id=comment.PhotoId});
                 }
             }
+
             return View(model);
         }
-
     }
 }

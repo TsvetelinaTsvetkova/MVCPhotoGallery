@@ -9,13 +9,14 @@ using System.Web.Mvc;
 
 namespace MVCPhotoGallery.Controllers
 {
+    [Authorize]
     public class AlbumController : Controller
     {
         public ActionResult Index()
         {
             return RedirectToAction("List");
         }
-
+      
         public ActionResult List()
         {
             using (var database = new PhotoGalleryDbContext())
@@ -27,7 +28,6 @@ namespace MVCPhotoGallery.Controllers
                 return View(albums);
             }
         }
-
 
         public ActionResult Create()
         {
@@ -51,11 +51,12 @@ namespace MVCPhotoGallery.Controllers
                     database.Albums.Add(album);
                     database.SaveChanges();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ListAlbums", "Home");
                 }
             }
             return View(album);
         }
+
 
         public ActionResult Edit(int? id)
         {
@@ -69,7 +70,6 @@ namespace MVCPhotoGallery.Controllers
                 var album = database.Albums.Where(c => c.Id == id)
                                     .Include(c => c.Author)
                     .First();
-
 
                 if (!IsUserAuthorizedToEdit(album))
                 {
@@ -98,7 +98,6 @@ namespace MVCPhotoGallery.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
             return View(album);
         }
 
@@ -113,7 +112,7 @@ namespace MVCPhotoGallery.Controllers
             {
                 var album = database.Albums
                     .Where(c => c.Id == id)
-                                    .Include(c => c.Author)
+                    .Include(c => c.Author)
                     .First();
 
                 if (!IsUserAuthorizedToEdit(album))
@@ -153,6 +152,7 @@ namespace MVCPhotoGallery.Controllers
                 return RedirectToAction("Index");
             }
         }
+
         private bool IsUserAuthorizedToEdit(Album album)
         {
             bool isAdmin = this.User.IsInRole("Admin");

@@ -7,13 +7,14 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12">
-            <img src="@Model.Path" width="304" height="236" />
+        <div class="col-sm-12">          
             <div>
                 <h2>
                     @Model.Title
                 </h2>
             </div>
+            <img src="@Model.Path" width="304" height="236" />
+            <h5>Author @Model.Author.FullName</h5>
         </div>
     </div>
     <div class="row">
@@ -30,7 +31,7 @@
             @Html.ActionLink("Add Comment", "Create", "Comment", new { @id = Model.Id }, new { @class = "btn btn-info btn-md" })
         </div>
     </div>
-    <h2>Comments: </h2>
+    <br /> 
     <div class="row">
         <div class="col-sm-12">
             @foreach (var comment in (List<Comment>)ViewBag.Comments)
@@ -38,7 +39,7 @@
                 <div class="col-sm-12" style="margin-bottom:15px">
                     <div class="row">
                         <div class="col-sm-12">
-                            <textarea class="col-sm-6" style="height:100px; margin-bottom:10px;" disabled="disabled">@comment.Content</textarea>
+                            <textarea class="col-sm-6" style="height:70px; margin-bottom:10px;" disabled="disabled">@comment.Content</textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -48,7 +49,7 @@
                         <div class="col-sm-2">
                             <span>@comment.DateAdded</span>
                         </div>
-                        @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
+                        @if (User.IsInRole("Admin") || comment.IsAuthor(User.Identity.Name))
                         {
                             <div class="col-sm-1">
                                 @Html.ActionLink("Delete", "Delete", "Comment", new { @id = comment.Id }, new { @class = "btn btn-danger btn-sm" })

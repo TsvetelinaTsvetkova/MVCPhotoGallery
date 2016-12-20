@@ -28,7 +28,6 @@ namespace MVCPhotoGallery.Models.DbModels
             this.AuthorId = authorId;
         }
 
-
         [ForeignKey("Photo")]
         public int PhotoId { get; set; }
 
@@ -38,6 +37,7 @@ namespace MVCPhotoGallery.Models.DbModels
         {
 
         }
+
         public Comment(string authorId, string content, int photoId)
         {
             this.AuthorId = authorId;
@@ -49,6 +49,5 @@ namespace MVCPhotoGallery.Models.DbModels
         {
             return this.Author.UserName.Equals(name);
         }
-
     }
 }

@@ -17,7 +17,6 @@
             <tbody>
                 @foreach (var user in Model)
                 {
-       
                     <tr>
                         <td>@user.FullName</td>
                         <td>@user.Email</td>
@@ -25,7 +24,8 @@
                             @Html.ActionLink("Edit", "Edit", "User", new { @id = user.Id }, null)
                             @Html.ActionLink("Delete", "Delete", "User", new { @id = user.Id }, null)
                         </td>
-                       @if (ViewBag.Admins.Contains(user.UserName))
+                       
+                        @if (ViewBag.Admins.Contains(user.UserName))
                             {
                                 <td>Yes</td>
                             }
@@ -35,7 +35,6 @@
                             }
                         </tr>
                 }
-
             </tbody>
         </table>
  

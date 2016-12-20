@@ -21,7 +21,6 @@ namespace MVCPhotoGallery.Models
 
         public HttpPostedFileBase ImageUpload { get; set; }
 
-
         public int AlbumId { get; set; }
 
         public ICollection<Photo> Photos { get; set; }

@@ -1,9 +1,11 @@
 ﻿@model MVCPhotoGallery.Models.DbModels.Comment
+
 @{
     ViewBag.Title = "Delete";
 }
 
 <h2>Delete comment</h2>
+
 @using (Html.BeginForm("Delete", "Comment",new {@id = Model.Id} ,FormMethod.Post, new { @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()

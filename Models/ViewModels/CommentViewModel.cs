@@ -9,7 +9,6 @@ namespace MVCPhotoGallery.Models.ViewModels
 {
     public class CommentViewModel
     {
-
         public int Id { get; set; }
 
         [Required]

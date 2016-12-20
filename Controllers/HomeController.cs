@@ -51,7 +51,8 @@ namespace MVCPhotoGallery.Controllers
 
                 this.ViewBag.Page = page;
                 this.ViewBag.AlbumId = albumId.ToString();
-              
+                this.ViewBag.AlbumName = database.Albums.FirstOrDefault(x => x.Id == albumId).Name;
+
                 var maxPage = Math.Ceiling(count / (double)pageSize);
                 this.ViewBag.MaxPage = maxPage;
 

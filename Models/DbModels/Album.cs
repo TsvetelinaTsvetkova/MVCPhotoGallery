@@ -20,7 +20,6 @@ namespace MVCPhotoGallery.Models
         public int Id { get; set; }
 
         [Required]
-        [Index(IsUnique = true)]
         [StringLength(20)]
         public string Name { get; set; }
 
@@ -35,6 +34,5 @@ namespace MVCPhotoGallery.Models
         public string AuthorId { get; set; }
 
         public virtual ApplicationUser Author { get; set; }
-
     }
 }

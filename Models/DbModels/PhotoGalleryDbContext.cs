@@ -23,7 +23,6 @@ namespace MVCPhotoGallery.Models
 
         public virtual IDbSet<Album> Albums { get; set; }
 
-
         public static PhotoGalleryDbContext Create()
         {
             return new PhotoGalleryDbContext();

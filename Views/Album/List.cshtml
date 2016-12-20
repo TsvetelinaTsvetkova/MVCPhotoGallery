@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Author</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -18,10 +19,11 @@
             {
                 <tr>
                     <td>@album.Name</td>
+                    <td>@album.Author.FullName</td>
                     <td>
                         @if (User.IsInRole("Admin") || album.IsAuthor(User.Identity.Name))
                         {
-                            @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null)
+                            @Html.ActionLink("Edit", "Edit", "Album", new { @id = album.Id }, null) 
                             @Html.ActionLink("Delete", "Delete", "Album", new { @id = album.Id }, null)
                         }
 
