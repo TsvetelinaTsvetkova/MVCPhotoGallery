@@ -14,7 +14,11 @@ namespace MVCPhotoGallery.Controllers
     {
         private string SavePostedFile(HttpPostedFileBase picture)
         {
+            var  FileName = Guid.NewGuid().ToString() + "_" +
+             Path.GetFileName(picture.FileName);
+
             string pic = System.IO.Path.GetFileName(picture.FileName);
+
             string path = System.IO.Path.Combine(
                                    Server.MapPath("~/Content/Images"), pic);
 
