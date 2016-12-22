@@ -181,6 +181,14 @@ namespace MVCPhotoGallery.Controllers.Admin
                     .Where(u => u.Id.Equals(id))
                     .First();
 
+                var userAlbums = database.Albums
+                    .Where(a => a.Author.Id == user.Id);
+
+                foreach (var album in userAlbums)
+                {
+                    database.Albums.Remove(album);
+                }
+
                 var userPhotos = database.Photos
                     .Where(a => a.Author.Id == user.Id);
 

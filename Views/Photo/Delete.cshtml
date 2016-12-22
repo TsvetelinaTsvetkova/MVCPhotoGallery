@@ -10,7 +10,7 @@
 {
     @Html.AntiForgeryToken()
     
-    <img src="@Model.Path" width="304" height="236" />
+    <img src="@Model.Path" class="img-responsive" style="width:40%; height:300px; min-width:200px;" />
         <div class="form-group">
             @Html.LabelFor(m => m.Title, new { @class = "control-label col-sm-4" })
             <div class="col-sm-4">

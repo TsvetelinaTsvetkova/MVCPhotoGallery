@@ -58,7 +58,7 @@
                             @Html.ActionLink(@photo.Title, "Details", "Photo", new { @id = photo.Id }, null)
                         </h2>
                     </header>
-                    <img src="@photo.Path" width="304" height="236" />
+                    <img src="@photo.Path" class="img-responsive" style="width:100%; height:250px; min-width:200px;"/>
                     <footer>
                         <small class="author">
                             Author @photo.Author.FullName
