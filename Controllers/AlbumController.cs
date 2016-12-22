@@ -144,6 +144,13 @@ namespace MVCPhotoGallery.Controllers
                 foreach (var photo in albumPhotos)
                 {
                     database.Photos.Remove(photo);
+
+                    string fullPath = AppDomain.CurrentDomain.BaseDirectory + photo.Path;
+
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
                 }
 
                 database.Albums.Remove(album);
